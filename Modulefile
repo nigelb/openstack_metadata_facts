@@ -1,0 +1,5 @@
+name 'openstack_metadata_facts'
+version '0.0.1'
+license 'GPLV3'
+author 'nigelb'
+source 'https://github.com/nigelb/openstack_metadata_facts'
