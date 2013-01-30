@@ -25,10 +25,10 @@ def grab_variables(object, mata_path=[])
     else
       path = ["openstack"]
       if mata_path.length > 0
-        path << mata_path.join("-")
+        path << mata_path.join("_")
       end
       path << key
-      Facter.add(path.join("-")) do
+      Facter.add(path.join("_")) do
         setcode do
           object[key]
         end
@@ -39,12 +39,12 @@ def grab_variables(object, mata_path=[])
 end
 
 begin
-  Timeout::timeout(20) {
-    if  Facter::Util::EC2.has_openstack_mac
-      openstack_metadata =  JSON.parse(open("http://169.254.169.254/openstack/2012-08-10/meta_data.json").read)
+#  Timeout::timeout(20) {
+#    if  Facter::Util::EC2.has_openstack_mac
+      openstack_metadata = JSON.parse(open("http://169.254.169.254/openstack/2012-08-10/meta_data.json").read)
       grab_variables(openstack_metadata)
-    end
-  }
-rescue Timeout::Error
-  puts "openstack-metadata not loaded"
+#    end
+#  }
+#rescue Timeout::Error
+#  puts "openstack-metadata not loaded"
 end
