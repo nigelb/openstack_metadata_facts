@@ -30,7 +30,11 @@ def grab_variables(object, mata_path=[])
       path << key
       Facter.add(path.join("_")) do
         setcode do
-          object[key]
+          if object[key].class == Array
+            object[key].join(",")
+          else
+            object[key]
+          end
         end
       end
     end
@@ -47,4 +51,7 @@ begin
 #  }
 #rescue Timeout::Error
 #  puts "openstack-metadata not loaded"
+rescue OpenURI::HTTPError
+	openstack_metadata = JSON.parse(open("/etc/openstack/meta_data.json").read)
+	grab_variables(openstack_metadata, mata_path=["meta"])
 end
