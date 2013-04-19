@@ -54,7 +54,7 @@ begin
 rescue OpenURI::HTTPError
 	begin
 		openstack_metadata = JSON.parse(open("/etc/openstack/meta_data.json").read)
-		grab_variables(openstack_metadata, mata_path=["meta"])
+		grab_variables(openstack_metadata)
 	rescue
 		puts "No OpenStack meta data available."
 	end
