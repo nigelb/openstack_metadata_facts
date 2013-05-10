@@ -51,11 +51,11 @@ begin
 #  }
 #rescue Timeout::Error
 #  puts "openstack-metadata not loaded"
-rescue OpenURI::HTTPError
-	begin
+#rescue OpenURI::HTTPError
+#	begin
 		openstack_metadata = JSON.parse(open("/etc/openstack/meta_data.json").read)
 		grab_variables(openstack_metadata)
 	rescue
 		puts "No OpenStack meta data available."
-	end
+#	end
 end
