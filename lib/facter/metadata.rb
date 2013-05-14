@@ -43,19 +43,20 @@ def grab_variables(object, mata_path=[])
 end
 
 begin
-#  Timeout::timeout(20) {
-#    if  Facter::Util::EC2.has_openstack_mac
-      openstack_metadata = JSON.parse(open("http://169.254.169.254/openstack/2012-08-10/meta_data.json").read)
-      grab_variables(openstack_metadata)
-#    end
-#  }
-#rescue Timeout::Error
-#  puts "openstack-metadata not loaded"
-#rescue OpenURI::HTTPError
-#	begin
-		openstack_metadata = JSON.parse(open("/etc/openstack/meta_data.json").read)
-		grab_variables(openstack_metadata)
-	rescue
-		puts "No OpenStack meta data available."
+#	if  Facter::Util::EC2.has_openstack_mac
+
+		begin
+			openstack_metadata = JSON.parse(open("/etc/openstack/meta_data.json").read)
+			grab_variables(openstack_metadata)
+			rescue  Errno::ENOENT
+				puts "No Local OpenStack meta data available."
+		end
+		begin
+			openstack_metadata = JSON.parse(open("http://169.254.169.254/openstack/2012-08-10/meta_data.json").read)
+			grab_variables(openstack_metadata)
+			rescue OpenURI::HTTPError
+			  puts "openstack-metadata not loaded"
+		end
 #	end
+
 end
